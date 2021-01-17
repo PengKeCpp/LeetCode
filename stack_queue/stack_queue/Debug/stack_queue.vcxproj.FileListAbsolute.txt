@@ -1,0 +1,2 @@
+E:\Visual stdio\project\stack_queue\stack_queue\Debug\stack_queue.exe
+E:\Visual stdio\project\stack_queue\stack_queue\Debug\stack_queue.pdb
