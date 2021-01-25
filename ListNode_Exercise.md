@@ -400,3 +400,67 @@ public:
 };
 ```
 
+
+
+### [23. 合并K个升序链表](https://leetcode-cn.com/problems/merge-k-sorted-lists/)
+
+```cpp
+//解法1：每次找数组中的最小元素然后手动模拟
+//时间复杂度：O(nk)-->k=lists.size()
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        if(lists.size()==0)return nullptr;
+        int size=lists.size();
+        ListNode *dynamic=new ListNode(0);
+        ListNode *temp=dynamic;
+        while(true){
+            int minIndex=-1;
+            ListNode *minNode=nullptr;
+            for(int i=0;i<size;i++){
+                if(lists[i]==nullptr)continue;
+                if(minNode==nullptr||minNode->val>lists[i]->val){
+                    minNode=lists[i];
+                    minIndex=i;
+                }
+            }
+            if(minIndex==-1) break;
+            temp->next=minNode;
+            temp=temp->next;
+            lists[minIndex]=lists[minIndex]->next;
+        }
+        return dynamic->next;
+    }
+};
+
+//解法二：使用小根堆优先队列输出 时间复杂度:O(nlongk)
+class Solution {
+public:
+    struct cmp{
+        bool operator()(const ListNode* l1,const ListNode* l2){
+            return l1->val > l2->val;
+        }
+    };
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        priority_queue<ListNode*,vector<ListNode*>,cmp> pri_que;
+        for(auto list:lists){
+            if(list!=nullptr)
+                pri_que.push(list);
+        }
+        if(pri_que.empty()) return nullptr;
+        ListNode *res=pri_que.top();
+        pri_que.pop();
+        if(res->next) pri_que.push(res->next);
+        ListNode*cur=res;
+        while(!pri_que.empty()){
+            ListNode *temp=pri_que.top();
+            pri_que.pop();
+            if(temp->next) pri_que.push(temp->next);
+            cur->next=temp;
+            cur=cur->next;
+        }
+        return res;
+    }
+};
+```
+
