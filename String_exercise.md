@@ -87,5 +87,37 @@ public:
 };
 ```
 
+### [49. 字母异位词分组](https://leetcode-cn.com/problems/group-anagrams/)
 
+```cpp
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        unordered_map<string,vector<string>> hash;
+        for(auto str:strs){
+            int st[26]={0};
+            for(int i=0;i<str.size();i++){
+                st[str[i]-'a']++;
+            }
+            string cur="";
+            for(int i=0;i<26;i++){
+                while(st[i]--)
+                    cur+=(char)(i+'a');
+            }
+           // cout<<cur<<endl;
+            if(hash.count(cur)==0){
+                vector<string> vec{str};
+                hash[cur]=vec;
+            }else{
+                hash[cur].push_back(str);
+            }
+        }
+        vector<vector<string>> res;
+        for(auto it=hash.begin();it!=hash.end();it++){
+            res.push_back(it->second);
+        }
+        return res;
+    }
+};
+```
 
